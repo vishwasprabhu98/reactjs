@@ -1,31 +1,66 @@
 
-
 import React, { Component } from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 
-class dishDetails extends Component{
+class DishesD extends Component{
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selectedDish : this.props.dish
-		};
 	}
 
-	onDishSelect(dish) {
-		this.setState({ selectedDish : dish })
+	renderComments(dishcomments) {
+
+		if(dishcomments != null) {
+			const returncomment = dishcomments.map((eachComment) => {
+				let date = eachComment.date.split("T")
+				return(
+					<ul className="list-unstyled">
+						<li className="mt-3">
+							{eachComment.comment} 
+						</li>
+						<li className="mt-3"> 
+							- - &nbsp;&nbsp;{ eachComment. author }, &nbsp; { date[0] }
+						</li>	
+					</ul>
+				);
+			});
+			
+			return (
+				returncomment
+			);
+
+		} else {
+			return (
+				<div> No Comments </div>
+			);
+		}
 	};
 
-	renderDish(dish){
+	render() {
+
+		const dish = this.props.dishinfo;
+
 		if(dish != null){
-			return(
-				<Card>
-					<CardImg top src={dish.image} alt={dish.name} />
-					<CardBody>
-						<CardTitle>{dish.name}</CardTitle>
-						<CardText>{dish.description}</CardText>
-					</CardBody>
-				</Card>
+			
+			return (
+				<div className="row">
+					<div className="col-12 col-md-5 mt-5 ml-0">
+						<Card>
+							<CardImg top src={dish.image} alt={dish.name} />
+							<CardBody>
+								<CardTitle>{dish.name}</CardTitle>
+								<CardText>{dish.description}</CardText>
+							</CardBody>
+						</Card>
+					</div>
+					<div className="col-12 col-md-5 mt-5">
+						<h4>Comments</h4>
+						
+						{ this.renderComments(dish.comments) }
+						
+					</div>
+				</div>
 			);
 		}
 		else{
@@ -33,9 +68,9 @@ class dishDetails extends Component{
 				<div></div>
 			);
 		}
+
 	};
 }
 
-export default dishDetails;
 
-
+export default DishesD;
