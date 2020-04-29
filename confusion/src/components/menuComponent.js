@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DishesD from './dishDetails.js'
+import DishDetail from './DishdetailComponent.js'
 import { Media } from 'reactstrap';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
@@ -19,7 +19,7 @@ class Menu extends Component {
 	};
 
 	renderDish(dish){
-		return <DishesD dishinfo = {this.state.selectedDish} />
+		return <DishDetail dishinfo = {this.state.selectedDish} />
 	};
 
 	render () {
@@ -44,9 +44,7 @@ class Menu extends Component {
 				<div className="row">
 					{ menu }
 				</div>	
-				{this.renderDish(this.state.selectedDish)}
-					
-				
+				{ this.renderDish(this.state.selectedDish) }
 			</div>
 		);
 	}

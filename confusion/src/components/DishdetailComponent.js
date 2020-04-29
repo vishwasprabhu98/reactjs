@@ -3,10 +3,22 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 
-class DishesD extends Component{
+class DishDetail extends Component{
 
 	constructor(props) {
 		super(props);
+	}
+
+	renderDish(perticulardish) {
+		return (
+			<Card>
+				<CardImg top src={perticulardish.image} alt={perticulardish.name} />
+				<CardBody>
+					<CardTitle>{perticulardish.name}</CardTitle>
+					<CardText>{perticulardish.description}</CardText>
+				</CardBody>
+			</Card>
+		);
 	}
 
 	renderComments(dishcomments) {
@@ -46,19 +58,11 @@ class DishesD extends Component{
 			return (
 				<div className="row">
 					<div className="col-12 col-md-5 mt-5 ml-0">
-						<Card>
-							<CardImg top src={dish.image} alt={dish.name} />
-							<CardBody>
-								<CardTitle>{dish.name}</CardTitle>
-								<CardText>{dish.description}</CardText>
-							</CardBody>
-						</Card>
+						{ this.renderDish( dish ) }
 					</div>
 					<div className="col-12 col-md-5 mt-5">
 						<h4>Comments</h4>
-						
-						{ this.renderComments(dish.comments) }
-						
+						{ this.renderComments( dish.comments ) }=
 					</div>
 				</div>
 			);
@@ -73,4 +77,4 @@ class DishesD extends Component{
 }
 
 
-export default DishesD;
+export default DishDetail;
