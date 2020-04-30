@@ -1,15 +1,9 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component{
 
-	// eslint-disable-next-line
-	constructor(props) {
-		super(props);
-	}
-
-	renderDish(perticulardish) {
+	const RenderDish = ({ perticulardish }) => {
 		return (
 			<Card>
 				<CardImg top src={perticulardish.image} alt={perticulardish.name} />
@@ -19,9 +13,9 @@ class DishDetail extends Component{
 				</CardBody>
 			</Card>
 		);
-	}
+	};
 
-	renderComments(dishcomments) {
+	const RenderComments = ({dishcomments}) => {
 
 		if(dishcomments != null) {
 			const returncomment = dishcomments.map((eachComment) => {
@@ -49,33 +43,32 @@ class DishDetail extends Component{
 		}
 	};
 
-	render() {
+	const DishDetail = (props) => {
+		const dish = props.dish;
 
-		const dish = this.props.dish;
-
-		if(dish != null){
-			return (
-				<div className="container">
-					<div className="row">
-						<div className="col-12 col-md-5 mt-5 ml-0">
-							{ this.renderDish( dish ) }
-						</div>
-						<div className="col-12 col-md-5 mt-5">
-							<h4>Comments</h4>
-							{ this.renderComments( dish.comments ) }
+			if(dish != null){
+				return (
+					<div className="container">
+						<div className="row">
+							<div className="col-12 col-md-5 mt-5 ml-0">
+								< RenderDish perticulardish = {dish} />
+							</div>
+							<div className="col-12 col-md-5 mt-5">
+								<h4>Comments</h4>
+								<RenderComments dishcomments = {dish.comments} />
+							</div>
 						</div>
 					</div>
-				</div>
-			);
-		}
-		else{
-			return(
-				<div></div>
-			);
-		}
+				);
+			}
+			else{
+				return(
+					<div></div>
+				);
+			}
+	}
 
-	};
-}
+
 
 
 export default DishDetail;
