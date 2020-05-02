@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col } from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, FormFeedback } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 export default class Contact extends Component {
@@ -14,11 +14,18 @@ export default class Contact extends Component {
 			email: '',
 			agree: false,
 			contactType: 'Tel.',
-			message: ''
+			message: '',
+			touched: {
+				firstname: false,
+				lastname: false,
+				telnum:false,
+				email: false
+			}
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
 	}
 
 	handleInputChange(event) {
@@ -37,8 +44,37 @@ export default class Contact extends Component {
 		event.preventDefault();
 	}
 
+	handleBlur = (field) => (e) => {
+		this.setState({
+			touched: { ...this.state.touched , [field] : true}
+		})
+	}
+
+	validate (firstname, lastname, telnum, email) {
+		const errors = {
+			firstname: '',
+			lastname: '',
+			telnum: '',
+			email: ''
+		}
+
+		if(this.state.touched.firstname && firstname.length<3)
+			errors.firstname = "First name should be >=3"
+
+		if (this.state.touched.lastname && lastname.length<3)
+			errors.lastname = "last name should be >=3"
+
+		if (this.state.touched.telnum && telnum.length<3)
+			errors.telnum = "telnum should be >=3"
+
+		if (this.state.touched.email && email.length<3)
+			errors.email = "email should be >=3"
+
+		return errors;
+	}
 
 	render() {
+		const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email)
 		return(
 			<div className="container">
 				<div className="row">
@@ -89,7 +125,11 @@ export default class Contact extends Component {
 									<Input type="text" id="firstname" name="firstname"
 										placeholder="First Name"
 										value={this.state.firstname}
-										onChange={this.handleInputChange} />
+										onChange={this.handleInputChange}
+										valid={errors.firstname === ''}
+										invalid={errors.firstname !== ''}
+										onBlur={this.handleBlur('firstname')} required/>
+									<FormFeedback>{errors.firstname}</FormFeedback>
 								</Col>
 							</FormGroup>
 							<FormGroup row>
@@ -98,8 +138,12 @@ export default class Contact extends Component {
 									<Input type="text" id="lastname" name="lastname"
 										placeholder="Last Name"
 										value={this.state.lastname}
-										onChange={this.handleInputChange} />
-								</Col>                        
+										onChange={this.handleInputChange} 
+										valid={errors.lastname === ''}
+										invalid={errors.lastname !== ''}
+										onBlur={this.handleBlur('lastname')} />
+									<FormFeedback>{errors.lastname}</FormFeedback>   
+								</Col>
 							</FormGroup>
 							<FormGroup row>
 							<Label htmlFor="telnum" md={2}>Contact Tel.</Label>
@@ -107,7 +151,11 @@ export default class Contact extends Component {
 									<Input type="tel" id="telnum" name="telnum"
 										placeholder="Tel. number"
 										value={this.state.telnum}
-										onChange={this.handleInputChange} />
+										onChange={this.handleInputChange} 
+										valid={errors.telnum === ''}
+										invalid={errors.telnum !== ''}
+										onBlur={this.handleBlur('telnum')} />
+									<FormFeedback>{errors.telnum}</FormFeedback>
 								</Col>
 							</FormGroup>
 							<FormGroup row>
@@ -116,7 +164,11 @@ export default class Contact extends Component {
 									<Input type="email" id="email" name="email"
 										placeholder="Email"
 										value={this.state.email}
-										onChange={this.handleInputChange} />
+										onChange={this.handleInputChange} 
+										valid={errors.email === ''}
+										invalid={errors.email !== ''}
+										onBlur={this.handleBlur('email')} />
+									<FormFeedback>{errors.email}</FormFeedback>
 								</Col>
 							</FormGroup>
 							<FormGroup row>
