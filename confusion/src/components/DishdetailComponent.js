@@ -27,8 +27,7 @@ class CommentForm extends Component {
 	}
 
 	handleSubmit(values) {
-		console.log('Current State is: ' + JSON.stringify(values));
-		alert('Current State is: ' + JSON.stringify(values));
+		this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
 		this.toggleModal();
 	}
 
@@ -41,11 +40,11 @@ class CommentForm extends Component {
 					<ModalBody>
 						<LocalForm onSubmit={(values) => this.handleSubmit(values)}>
 							<Row className="form-group">
-								<Label htmlFor="options" md={12}>Rating</Label>
+								<Label htmlFor="rating" md={12}>Rating</Label>
 								<Col md={{size: 12, offset: 0}}>
-									<Control.select model=".options" name="options"
+									<Control.select model=".rating" name="rating"
 										className="form-control">
-										<option selected>1</option>
+										<option defaultValue>1</option>
 										<option>2</option>
 										<option>3</option>
 										<option>4</option>
@@ -55,9 +54,9 @@ class CommentForm extends Component {
 							</Row>
 						
 							<Row className="form-group">
-								<Label htmlFor="fullname" md={12}>Your Name</Label>
+								<Label htmlFor="author" md={12}>Your Name</Label>
 								<Col md={12}>
-									<Control.text model=".fullname" id="fullname" name="fullname"
+									<Control.text model=".author" id="author" name="author"
 										placeholder="Your Name" 
 										className="form-control"
 										validators = {{
@@ -68,7 +67,7 @@ class CommentForm extends Component {
 										/>
 									<Errors 
 										className="text-danger"
-										model=".fullname"
+										model=".autho"
 										show="touched"
 										messages={{
 											required: 'Required ',
@@ -79,9 +78,9 @@ class CommentForm extends Component {
 								</Col>
 							</Row>
 							<Row className="form-group">
-								<Label htmlFor="message" md={{size: 12}}>Comment</Label>
+								<Label htmlFor="comment" md={{size: 12}}>Comment</Label>
 								<Col md={{size: 12}}>
-									<Control.textarea model=".message" name="message" id="message"
+									<Control.textarea model=".comment" name="comment" id="comment"
 										rows = "6"
 										className="form-control">
 									</Control.textarea>
@@ -118,7 +117,7 @@ const RenderDish = ({ perticulardish }) => {
 
 
 //Function
-const RenderComments = ({dishcomments}) => {
+const RenderComments = ({dishcomments, addComment, dishId}) => {
 	if(dishcomments != null) {
 		const returncomment = dishcomments.map((eachComment) => {
 			//let date = eachComment.date.split("T")
@@ -137,7 +136,7 @@ const RenderComments = ({dishcomments}) => {
 		return (
 			<React.Fragment>
 				{returncomment}
-				<CommentForm />
+				<CommentForm dishId={dishId} addComment={addComment}/>
 			</React.Fragment>
 		);
 	} else {
@@ -169,7 +168,9 @@ const DishDetail = (props) => {
 						</div>
 						<div className="col-12 col-md-5 mt-5">
 							<h4>Comments</h4>
-							<RenderComments dishcomments = {props.comments} />
+							<RenderComments dishcomments = {props.comments} 
+							addComment={props.addComment}
+							dishId={props.dish.id} />
 						</div>
 					</div>
 				</div>
