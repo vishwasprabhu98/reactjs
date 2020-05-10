@@ -5,6 +5,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent'
+import { baseUrl } from '../shared/baseUrl'
 
 const required = (val) => val && val.length;
 const minLength = (len) => (val) => val && (val.length > len);
@@ -68,7 +69,7 @@ class CommentForm extends Component {
 										/>
 									<Errors 
 										className="text-danger"
-										model=".autho"
+										model=".author"
 										show="touched"
 										messages={{
 											required: 'Required ',
@@ -107,7 +108,7 @@ class CommentForm extends Component {
 const RenderDish = ({ perticulardish }) => {
 	return (
 		<Card>
-			<CardImg top src={perticulardish.image} alt={perticulardish.name} />
+			<CardImg top src={baseUrl + perticulardish.image} alt={perticulardish.name} />
 			<CardBody>
 				<CardTitle>{perticulardish.name}</CardTitle>
 				<CardText>{perticulardish.description}</CardText>
