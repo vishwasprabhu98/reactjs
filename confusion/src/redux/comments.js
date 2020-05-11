@@ -3,6 +3,9 @@ import * as ActionTypes from './ActionTypes';
 export const Comments = (state = {
 		errMess: null,
 		comments: []
+		//only during initial load the comments are empty
+		//after it loads the comments will not be empty even if this reducer
+		//is called again and again because the state will be set previously.
 	}, action) => {
 	switch(action.type){
 
@@ -14,10 +17,7 @@ export const Comments = (state = {
 
 		case ActionTypes.ADD_COMMENT:
 			var comment = action.payload;
-			comment.id = state.comments.length;
-			comment.date = new Date().toISOString();
-			console.log("Comment: ", comment);
-			return {...state, comments:state.comments.concat(comment)};
+			return {...state, comments: state.comments.concat(comment)};
 
 		default:
 			return state;
