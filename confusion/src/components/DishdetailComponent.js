@@ -5,7 +5,8 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent'
-import { baseUrl } from '../shared/baseUrl'
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;
 const minLength = (len) => (val) => val && (val.length > len);
@@ -107,37 +108,57 @@ class CommentForm extends Component {
 //Function
 const RenderDish = ({ perticulardish }) => {
 	return (
-		<Card>
-			<CardImg top src={baseUrl + perticulardish.image} alt={perticulardish.name} />
-			<CardBody>
-				<CardTitle>{perticulardish.name}</CardTitle>
-				<CardText>{perticulardish.description}</CardText>
-			</CardBody>
-		</Card>
+		<FadeTransform
+			in
+			transformProps={{
+				exitTransform: 'scale(0.5) translateY(-50%)'
+			}}>
+			<Card>
+				<CardImg top src={baseUrl + perticulardish.image} alt={perticulardish.name} />
+				<CardBody>
+					<CardTitle>{perticulardish.name}</CardTitle>
+					<CardText>{perticulardish.description}</CardText>
+				</CardBody>
+			</Card>
+		</FadeTransform>
 	);
 };
 
 
 //Function
 const RenderComments = ({dishcomments, postComment, dishId}) => {
+	// <Stagger in>
+	// {dishcomments.map((comment) => {
+	// 	return (
+	// 		<Fade in>
+	// 		<li key={comment.id}>
+	// 		<p>{comment.comment}</p>
+	// 		<p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+	// 		</li>
+	// 		</Fade>
+	// 	);
+	// })}
+	// </Stagger>
 	if(dishcomments != null) {
 		const returncomment = dishcomments.map((eachComment) => {
-			//let date = eachComment.date.split("T")
 			return(
 				<ul key={eachComment.id} className="list-unstyled">
-					<li className="mt-3">
-						{eachComment.comment} 
-					</li>
-					<li className="mt-3"> 
-						- - &nbsp;&nbsp;{ eachComment.author }, &nbsp; {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(eachComment.date)))}
-					</li>	
+					<Fade in>
+						<li className="mt-3">
+							{eachComment.comment} 
+						</li>
+						<li className="mt-3"> 
+							- - &nbsp;&nbsp;{ eachComment.author }, &nbsp; {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(eachComment.date)))}
+						</li>	
+					</Fade>
 				</ul>
 			);
 		});
-		
 		return (
 			<React.Fragment>
+				
 				{returncomment}
+				
 				<CommentForm dishId={dishId} postComment={postComment}/>
 			</React.Fragment>
 		);
